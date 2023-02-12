@@ -82,7 +82,7 @@ exports.deleteActivity = (res, searchState, deleteState, id) => {
       connection.query(deleteState, id, (err, results, fields) => {
         if (err) return responseError(res, 500, err);
 
-        return responseData(res, 200, {});
+        return responseData(res, 204, {});
       });
     } else {
       return responseIdNotFound(res, 400, id);

@@ -8,6 +8,15 @@ const responseData = function (response, statusCode, values) {
   response.end();
 };
 
+const responseIdTodoNotFound = function (response, statusCode, id) {
+  var data = {
+    status: "Not Found",
+    message: `Todo With ID ${id} Not Found`,
+  };
+  response.status(statusCode).json(data);
+  response.end();
+};
+
 const responseIdNotFound = function (response, statusCode, id) {
   var data = {
     status: "Not Found",
@@ -30,4 +39,5 @@ module.exports = {
   responseData,
   responseIdNotFound,
   responseError,
+  responseIdTodoNotFound,
 };
