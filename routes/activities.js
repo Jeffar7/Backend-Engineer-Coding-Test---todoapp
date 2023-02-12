@@ -6,6 +6,10 @@ router
   .route("/")
   .post(activities.createActivity)
   .get(activities.getAllActivities);
-router.route("/:id").get(activities.getOneActivity);
+router
+  .route("/:id")
+  .patch(activities.updateActivity)
+  .delete(activities.deleteActivity)
+  .get(activities.getOneActivity);
 
 module.exports = router;
