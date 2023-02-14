@@ -5,6 +5,12 @@ const connection = mysql.createConnection({
   user: "root",
   password: "",
   database: "test-todolist",
+  typeCast: function (field, next) {
+    if (field.type === "TINY" && field.length === 1) {
+      return field.string() === "1";
+    }
+    return next();
+  },
 });
 
 connection.connect((err) => {
