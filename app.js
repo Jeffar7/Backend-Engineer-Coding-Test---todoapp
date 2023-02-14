@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const ActivityRouter = require("./routes/activities");
 const TodosRouter = require("./routes/todos");
