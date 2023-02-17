@@ -4,9 +4,9 @@ const router = express.Router();
 
 router
   .route("/:id")
-  .get(todos.getOneTodo)
   .patch(todos.updateTodo)
-  .delete(todos.deleteTodo);
-router.route("/").get(todos.getAllTodos).post(todos.createTodo);
+  .delete(todos.deleteTodo)
+  .get(todos.getOneTodo);
+router.route("/").post(todos.createTodo).get(todos.getAllTodos);
 
 module.exports = router;

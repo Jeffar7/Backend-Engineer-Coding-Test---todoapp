@@ -4,6 +4,7 @@ const {
   responseData,
   responseError,
   responseIdTodoNotFound,
+  responseDataCannotBeNull,
 } = require("../utils/response-handler");
 
 const resDataById = (sql, params, code, res) => {
@@ -19,7 +20,7 @@ exports.getOneTodo = (res, state, id) => {
     if (err) return responseError(res, 500, err);
     if (results.length === 0) return responseIdTodoNotFound(res, 404, id);
 
-    return responseData(res, 200, results);
+    return responseData(res, 200, results[0]);
   });
 };
 
@@ -31,12 +32,27 @@ exports.getAllTodos = (res, state, activity_id) => {
 };
 
 exports.createTodo = (res, state, data) => {
+  if (!data.title) {
+    return responseDataCannotBeNull(
+      res,
+      400,
+      "Bad Request",
+      "title cannot be null"
+    );
+  } else if (!data.activity_group_id) {
+    return responseDataCannotBeNull(
+      res,
+      400,
+      "Bad Request",
+      "activity_group_id cannot be null"
+    );
+  }
   connection.query(state, data, (err, results, fields) => {
-    console.log(state, data);
     if (err) return responseError(res, 500, err);
-    const sql = "SELECT * FROM todos WHERE id = ?";
+    const sql =
+      "SELECT id,title,activity_group_id,is_active,priority,updatedAt,createdAt FROM todos WHERE id = ?";
     const id = [results.insertId];
-    return resDataById(sql, id, 201, res);
+    resDataById(sql, id, 201, res);
   });
 };
 
@@ -56,11 +72,10 @@ exports.updateTodo = (res, searchState, updateState, id, data) => {
         const sql = "SELECT * FROM todos WHERE id = ?";
         const params = id;
 
-        console.log(params);
-        return resDataById(sql, params, 200, res);
+        resDataById(sql, params, 200, res);
       });
     } else {
-      return responseIdTodoNotFound(res, 400, id);
+      return responseIdTodoNotFound(res, 404, id);
     }
   });
 };
@@ -75,7 +90,7 @@ exports.deleteTodo = (res, searchState, deleteState, id) => {
         return responseData(res, 200, {});
       });
     } else {
-      return responseIdTodoNotFound(res, 400, id);
+      return responseIdTodoNotFound(res, 404, id);
     }
   });
 };

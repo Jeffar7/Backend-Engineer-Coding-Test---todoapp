@@ -1,8 +1,32 @@
 const responseData = function (response, statusCode, values) {
   var data = {
-    success: "Success",
+    status: "Success",
     message: "Success",
     data: values,
+  };
+  response.status(statusCode).json(data);
+  response.end();
+};
+
+const responseDataTodo = function (response, statusCode, values) {
+  var data = {
+    status: "Success",
+    message: "Success",
+    data: values,
+  };
+  response.status(statusCode).json(data);
+  response.end();
+};
+
+const responseDataCannotBeNull = function (
+  response,
+  statusCode,
+  status,
+  message
+) {
+  var data = {
+    status: status,
+    message: message,
   };
   response.status(statusCode).json(data);
   response.end();
@@ -11,7 +35,7 @@ const responseData = function (response, statusCode, values) {
 const responseIdTodoNotFound = function (response, statusCode, id) {
   var data = {
     status: "Not Found",
-    message: `Todo With ID ${id} Not Found`,
+    message: `Todo with ID ${id} Not Found`,
   };
   response.status(statusCode).json(data);
   response.end();
@@ -20,7 +44,7 @@ const responseIdTodoNotFound = function (response, statusCode, id) {
 const responseIdNotFound = function (response, statusCode, id) {
   var data = {
     status: "Not Found",
-    message: `Activity With ID ${id} Not Found`,
+    message: `Activity with ID ${id} Not Found`,
   };
   response.status(statusCode).json(data);
   response.end();
@@ -40,4 +64,6 @@ module.exports = {
   responseIdNotFound,
   responseError,
   responseIdTodoNotFound,
+  responseDataCannotBeNull,
+  responseDataTodo,
 };

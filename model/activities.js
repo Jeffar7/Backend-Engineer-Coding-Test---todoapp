@@ -34,16 +34,14 @@ exports.createActivity = (res, state, data) => {
   if (!data.title) {
     return res.status(400).json({
       status: "Bad Request",
-      message: "Title cannot be null",
+      message: "title cannot be null",
     });
   }
 
   connection.query(state, data, (err, results, field) => {
     if (err) return responseError(res, 500, err);
-
     const sql = "SELECT * FROM activities WHERE id = ?";
     const params = [results.insertId];
-
     resDataById(sql, params, 201, res);
   });
 };
@@ -69,7 +67,7 @@ exports.updateActivity = (res, searchState, updateState, id, data) => {
         resDataById(sql, params, 200, res);
       });
     } else {
-      return responseIdNotFound(res, 400, id);
+      return responseIdNotFound(res, 404, id);
     }
   });
 };
@@ -81,11 +79,10 @@ exports.deleteActivity = (res, searchState, deleteState, id) => {
     if (results.length) {
       connection.query(deleteState, id, (err, results, fields) => {
         if (err) return responseError(res, 500, err);
-
-        return responseData(res, 204, {});
+        return responseData(res, 200, {});
       });
     } else {
-      return responseIdNotFound(res, 400, id);
+      return responseIdNotFound(res, 404, id);
     }
   });
 };
