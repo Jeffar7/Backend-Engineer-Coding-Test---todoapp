@@ -11,11 +11,18 @@ app.use(bodyparser.urlencoded({ extended: false }));
 app.use("/activity-groups", ActivityRouter);
 app.use("/todo-items", TodosRouter);
 
-const PORT = 3030;
-
-app.listen(PORT, (err) => {
-  console.log(`app running on PORT https://localhost:${PORT}`);
+const port = process.env.PORT || 3030;
+app.listen(port, (err) => {
   if (err) {
     console.log(err);
   }
+  console.log(`App runing on port ${port}`);
+});
+
+process.on("unhandledRejection", (err) => {
+  console.log("UNHANDLED REJECTION! 💥 Shutting down...");
+  console.log(err.name, err.message);
+  server.close(() => {
+    process.exit(1);
+  });
 });
